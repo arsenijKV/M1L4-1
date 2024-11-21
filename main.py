@@ -5,6 +5,11 @@ from logic import Pokemon
 
 bot = telebot.TeleBot(token) 
 
+@bot.message_handler(commands=['help', 'start'])
+def send_welcome(message):
+    bot.reply_to(message, "Ну привет, мой маленький Егоиста") 
+
+    
 @bot.message_handler(commands=['go'])
 def go(message):
     if message.from_user.username not in Pokemon.pokemons.keys():
