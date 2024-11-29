@@ -2,7 +2,7 @@ from random import randint
 import requests
 
 class Pokemon:
-    pokemons = {}
+    pokemons = {} # { username : pokemon}
     # Инициализация объекта (конструктор)
     def __init__(self, pokemon_trainer):
 
@@ -11,9 +11,10 @@ class Pokemon:
         self.pokemon_number = randint(1,1000)
         self.img = self.get_img()
         self.name = self.get_name()
-        self.hp = randint(10,100)
-        self.power = randint(10,100)
-        self.abilities = self.get_abilities
+
+        self.power = randint(30, 60)
+        self.hp = randint(200, 400)
+
         Pokemon.pokemons[pokemon_trainer] = self
 
     # Метод для получения картинки покемона через API
@@ -22,11 +23,9 @@ class Pokemon:
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
-            return (data['sprites']['other']['official-artwork']['front_default'])
+            return (data['sprites']["other"]['official-artwork']["front_default"])
         else:
-            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-
-
+            return "https://static.wikia.nocookie.net/anime-characters-fight/images/7/77/Pikachu.png/revision/latest/scale-to-width-down/700?cb=20181021155144&path-prefix=ru"
     
     # Метод для получения имени покемона через API
     def get_name(self):
@@ -38,10 +37,12 @@ class Pokemon:
         else:
             return "Pikachu"
 
+
+    # Метод класса для получения информации
     def info(self):
         return f"""Имя твоего покеомона: {self.name}
-        Cила покемона: {self.power}
-        Здоровье покемона: {self.hp}"""
+Cила покемона: {self.power}
+Здоровье покемона: {self.hp}"""
 
     # Метод класса для получения картинки покемона
     def show_img(self):
@@ -55,15 +56,14 @@ class Pokemon:
         if enemy.hp > self.power:
             enemy.hp -= self.power
             return f"""Сражение @{self.pokemon_trainer} с @{enemy.pokemon_trainer}
-            Здоровье @{enemy.pokemon_trainer} теперь {enemy.hp}"""
+Здоровье @{enemy.pokemon_trainer} теперь {enemy.hp}"""
         else:
             enemy.hp = 0
             return f"Победа @{self.pokemon_trainer} над @{enemy.pokemon_trainer}! "
 
 class Wizard(Pokemon):
+  pass
 
-    def info(self): # доп. задание
-        return "У тебя покемон-волшебник \n\n" + super().info()
 
 class Fighter(Pokemon):
     def attack(self, enemy):
@@ -72,8 +72,3 @@ class Fighter(Pokemon):
         result = super().attack(enemy)
         self.power -= super_power
         return result + f"\nБоец применил супер-атаку силой:{super_power} "
-
-    def info(self): # доп. задание
-        return "У тебя покемон-боец \n\n" + super().info()
-
-
